@@ -10,92 +10,165 @@
     :root {
       --red: #c0152a;
       --red-soft: #e8304a;
-      --red-deep: #8b0000;
       --gold: #c9a96e;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%; min-height: 100vh;
+    html, body { width: 100%; min-height: 100vh; background: #0d0003; font-family: 'Lato', sans-serif; overflow-x: hidden; }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed; inset: 0; z-index: 1000;
       background: #0d0003;
-      font-family: 'Lato', sans-serif;
-      overflow-x: hidden;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 30px;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
     }
+    #splash.hide { opacity: 0; visibility: hidden; }
+
+    .splash-hearts {
+      font-size: 2rem; letter-spacing: 0.6em;
+      color: #3a000f;
+      animation: pulse-dim 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dim {
+      0%,100% { color: #3a000f; } 50% { color: #6b0018; }
+    }
+
+    .splash-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      color: #5a1020;
+      letter-spacing: 0.05em;
+    }
+
+    #clickBtn {
+      background: none;
+      border: 1px solid #c0152a88;
+      color: #e8304a;
+      font-family: 'Lato', sans-serif;
+      font-weight: 100;
+      font-size: 0.75rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      padding: 18px 50px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      outline: none;
+    }
+    #clickBtn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--red);
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+      z-index: -1;
+    }
+    #clickBtn:hover { color: #fff; border-color: var(--red); letter-spacing: 0.6em; }
+    #clickBtn:hover::before { transform: translateX(0); }
+
+    .splash-hint {
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: #4a1020;
+      text-transform: uppercase;
+      animation: blink 2.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+
+    /* ── MAIN PAGE ── */
     .bg-gradient {
       position: fixed; inset: 0; z-index: 0;
       background:
         radial-gradient(ellipse 80% 60% at 50% 0%,   #3d0010 0%, transparent 70%),
         radial-gradient(ellipse 60% 40% at 20% 80%,  #2a000a 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 80% 90%,  #1f0008 0%, transparent 60%),
         #0d0003;
     }
-    #heartCanvas {
-      position: fixed; inset: 0; z-index: 1;
-      pointer-events: none;
-    }
-    .orb {
-      position: fixed; border-radius: 50%;
-      filter: blur(90px); pointer-events: none; z-index: 2;
-    }
+    #heartCanvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 2; }
     .orb-1 { width:400px;height:400px;background:#8b000033;top:-100px;left:-100px;animation:drift 12s ease-in-out infinite alternate;}
     .orb-2 { width:350px;height:350px;background:#c0152a22;bottom:-80px;right:-80px;animation:drift 10s ease-in-out 2s infinite alternate-reverse;}
-    .orb-3 { width:250px;height:250px;background:#e8304a1a;top:40%;left:50%;animation:drift 8s ease-in-out 1s infinite alternate;}
-    @keyframes drift {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(30px,20px) scale(1.1); }
-    }
+    @keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(30px,20px) scale(1.1);} }
+
     .page {
       position: relative; z-index: 10;
       min-height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 60px 24px; gap: 0;
+      padding: 60px 24px;
+      opacity: 0; transition: opacity 1.5s ease 0.3s;
     }
+    .page.visible { opacity: 1; }
+
     .ornament {
-      font-size: 2rem; letter-spacing: 0.4em;
-      color: var(--red-soft);
-      opacity: 0; animation: fadeUp 1s ease 0.2s forwards;
+      font-size: 2rem; letter-spacing: 0.4em; color: var(--red-soft);
+      opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease; transform: translateY(15px);
       margin-bottom: 10px;
     }
     .tag {
-      font-weight: 100; font-size: 0.6rem;
-      letter-spacing: 0.55em; text-transform: uppercase;
+      font-weight: 100; font-size: 0.6rem; letter-spacing: 0.55em; text-transform: uppercase;
       color: #b06070;
-      opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+      opacity: 0; transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s; transform: translateY(15px);
       margin-bottom: 28px;
     }
     .title {
       font-family: 'Great Vibes', cursive;
       font-size: clamp(3.5rem, 11vw, 8rem);
-      color: var(--red-soft);
-      text-align: center; line-height: 1.1;
+      color: var(--red-soft); text-align: center; line-height: 1.1;
       text-shadow: 0 0 40px #e8304a55, 0 0 80px #c0152a33;
-      opacity: 0; animation: fadeUp 1.2s cubic-bezier(0.22,1,0.36,1) 0.8s forwards;
+      opacity: 0; transition: opacity 1s ease 0.4s, transform 1s ease 0.4s; transform: translateY(25px);
       margin-bottom: 10px;
     }
     .title span {
-      display: block;
-      font-size: clamp(2.2rem, 7vw, 5rem);
-      color: #fff0f3;
-      text-shadow: 0 0 30px #ff000033;
+      display: block; font-size: clamp(2.2rem, 7vw, 5rem);
+      color: #fff0f3; text-shadow: 0 0 30px #ff000033;
     }
+
+    /* ── PHOTO ── */
+    .photo-wrap {
+      margin: 28px 0;
+      opacity: 0; transition: opacity 1.2s ease 0.8s, transform 1.2s ease 0.8s; transform: scale(0.85);
+      position: relative;
+    }
+    .photo-wrap img {
+      width: clamp(200px, 50vw, 320px);
+      height: clamp(200px, 50vw, 320px);
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #c0152a66;
+      box-shadow:
+        0 0 0 6px #1a000744,
+        0 0 40px #e8304a44,
+        0 0 80px #c0152a22;
+      display: block;
+    }
+    .photo-wrap::before, .photo-wrap::after {
+      content: '♥';
+      position: absolute;
+      font-size: 1.4rem; color: var(--red-soft);
+      animation: float-heart 3s ease-in-out infinite alternate;
+    }
+    .photo-wrap::before { top: -10px; left: -10px; animation-delay: 0s; }
+    .photo-wrap::after  { bottom: -10px; right: -10px; animation-delay: 1s; }
+    @keyframes float-heart { from{transform:translateY(0);} to{transform:translateY(-10px);} }
+
     .divider {
       display: flex; align-items: center; gap: 16px;
-      margin: 28px 0;
-      opacity: 0; animation: fadeUp 1s ease 1.4s forwards;
+      margin: 24px 0;
+      opacity: 0; transition: opacity 0.8s ease 1s, transform 0.8s ease 1s; transform: translateY(10px);
       width: min(500px, 90vw);
     }
-    .divider-line {
-      flex: 1; height: 1px;
-      background: linear-gradient(to right, transparent, var(--red), transparent);
-    }
+    .divider-line { flex:1; height:1px; background: linear-gradient(to right, transparent, var(--red), transparent); }
     .divider-heart { color: var(--red-soft); font-size: 1.1rem; }
+
     .poem {
       display: flex; flex-direction: column; align-items: center; gap: 22px;
       width: min(620px, 92vw);
     }
     .poem-line {
-      font-family: 'Playfair Display', serif;
-      font-style: italic; font-weight: 300;
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 300;
       text-align: center; color: #f9dde3;
       opacity: 0; transform: translateY(20px);
       line-height: 1.7;
@@ -103,52 +176,49 @@
     .poem-line.lg { font-size: clamp(1.1rem, 3.5vw, 1.5rem); }
     .poem-line.md { font-size: clamp(0.95rem, 2.8vw, 1.2rem); color: #e8b8c2; }
     .poem-line.sm { font-size: clamp(0.8rem, 2.2vw, 1rem); color: #c98a98; }
-    .poem-line.visible {
-      transition: opacity 0.9s ease, transform 0.9s ease;
-      opacity: 1; transform: translateY(0);
-    }
+    .poem-line.visible { transition: opacity 0.9s ease, transform 0.9s ease; opacity: 1; transform: translateY(0); }
+
     .heart-row {
-      font-size: 1.4rem; letter-spacing: 0.5em;
-      color: var(--red);
-      opacity: 0; animation: fadeUp 1s ease 2.8s forwards;
-      margin: 10px 0;
+      font-size: 1.4rem; letter-spacing: 0.5em; color: var(--red);
+      opacity: 0; transition: opacity 0.8s ease; margin: 10px 0;
     }
     .signature {
       font-family: 'Great Vibes', cursive;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      color: var(--gold);
+      font-size: clamp(2rem, 6vw, 3.5rem); color: var(--gold);
       text-shadow: 0 0 20px #c9a96e44;
-      opacity: 0; animation: fadeUp 1.2s ease 3.2s forwards;
-      margin-top: 18px;
+      opacity: 0; transition: opacity 1s ease; margin-top: 18px;
     }
     .bottom-ornament {
-      margin-top: 36px;
-      font-size: 1.6rem; letter-spacing: 0.6em;
-      color: #8b2030;
-      opacity: 0; animation: fadeUp 1s ease 3.6s forwards;
+      margin-top: 36px; font-size: 1.6rem; letter-spacing: 0.6em; color: #8b2030;
+      opacity: 0; transition: opacity 0.8s ease;
     }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+
+    /* reveal class for non-poem elements */
+    .reveal { opacity: 1 !important; transform: scale(1) translateY(0) !important; }
+
     body { cursor: none; }
-    #cursor {
-      position: fixed; width: 18px; height: 18px;
-      pointer-events: none; z-index: 9999;
-      transform: translate(-50%,-50%);
-      font-size: 16px; line-height: 1;
-    }
+    #cursor { position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); font-size:16px; line-height:1; }
   </style>
 </head>
 <body>
 
   <div id="cursor">🤍</div>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="splash-hearts">♥ ♥ ♥</div>
+    <div class="splash-text">Something special is waiting for you…</div>
+    <button id="clickBtn">✦ Open ✦</button>
+    <div class="splash-hint">click to reveal</div>
+  </div>
+
+  <!-- MAIN -->
   <div class="bg-gradient"></div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
   <canvas id="heartCanvas"></canvas>
 
-  <div class="page">
+  <div class="page" id="mainPage">
     <div class="ornament">♥ ♥ ♥</div>
     <p class="tag">a message from the heart</p>
 
@@ -156,6 +226,11 @@
       Happy Birthday
       <span>to the Love of my Life</span>
     </h1>
+
+    <!-- PHOTO — place us.jpg / us.png next to index.html -->
+    <div class="photo-wrap">
+      <img src="us.jfif" alt="Us" />
+    </div>
 
     <div class="divider">
       <div class="divider-line"></div>
@@ -166,19 +241,11 @@
     <div class="poem">
       <p class="poem-line lg">You are my sunrise and my stars,</p>
       <p class="poem-line lg">the reason my heart knows how to beat.</p>
-
       <p class="poem-line md">Every moment with you is a gift I never deserve —<br>yet you give it endlessly, unconditionally.</p>
-
       <p class="poem-line md">You are my favorite adventure,<br>my safest place, my greatest love.</p>
-
-      <p class="poem-line sm">On this day you were born, the world became more beautiful —<br>
-      and I became the luckiest soul alive.</p>
-
-      <p class="poem-line sm">I love you beyond words, beyond time,<br>
-      beyond every lifetime I could ever live.</p>
-
-      <p class="poem-line sm">You are everything I never knew I needed,<br>
-      and everything I will always choose.</p>
+      <p class="poem-line sm">On this day you were born, the world became more beautiful —<br>and I became the luckiest soul alive.</p>
+      <p class="poem-line sm">I love you beyond words, beyond time,<br>beyond every lifetime I could ever live.</p>
+      <p class="poem-line sm">You are everything I never knew I needed,<br>and everything I will always choose.</p>
     </div>
 
     <div class="heart-row">♥ ♥ ♥ ♥ ♥</div>
@@ -189,85 +256,98 @@
   <script>
   $(document).ready(function () {
 
-    // Custom cursor
+    // cursor
     $(document).on('mousemove', function(e) {
       $('#cursor').css({ left: e.clientX, top: e.clientY });
     });
 
-    // Stagger poem lines
-    $('.poem-line').each(function(i) {
-      setTimeout(() => $(this).addClass('visible'), i * 300 + 1600);
-    });
-
-    // ── Falling hearts canvas ──
+    // ── Hearts canvas ──
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize();
-    window.addEventListener('resize', resize);
+    resize(); window.addEventListener('resize', resize);
 
     function heartPath(ctx, x, y, size) {
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.scale(size, size);
+      ctx.save(); ctx.translate(x,y); ctx.scale(size,size);
       ctx.beginPath();
-      ctx.moveTo(0, -0.3);
-      ctx.bezierCurveTo( 0,  -1,  1.2, -1,  1.2,  0.1);
-      ctx.bezierCurveTo( 1.2, 1,  0,   1.6,  0,   1.6);
-      ctx.bezierCurveTo( 0,  1.6,-1.2,  1, -1.2,  0.1);
-      ctx.bezierCurveTo(-1.2,-1,  0,  -1,   0,  -0.3);
-      ctx.closePath();
-      ctx.restore();
+      ctx.moveTo(0,-0.3);
+      ctx.bezierCurveTo(0,-1,1.2,-1,1.2,0.1);
+      ctx.bezierCurveTo(1.2,1,0,1.6,0,1.6);
+      ctx.bezierCurveTo(0,1.6,-1.2,1,-1.2,0.1);
+      ctx.bezierCurveTo(-1.2,-1,0,-1,0,-0.3);
+      ctx.closePath(); ctx.restore();
     }
 
     const colors = ['#c0152a','#e8304a','#ff6b80','#ff4466','#8b0000'];
-    const hearts = Array.from({ length: 40 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight - window.innerHeight,
-      size: Math.random() * 7 + 3,
-      speed: Math.random() * 0.8 + 0.3,
-      wobble: Math.random() * Math.PI * 2,
-      wobbleSpeed: (Math.random() - 0.5) * 0.02,
-      alpha: Math.random() * 0.35 + 0.05,
-      color: colors[Math.floor(Math.random() * colors.length)]
+    const hearts = Array.from({length:40},()=>({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight - window.innerHeight,
+      size: Math.random()*7+3,
+      speed: Math.random()*0.8+0.3,
+      wobble: Math.random()*Math.PI*2,
+      wobbleSpeed: (Math.random()-0.5)*0.02,
+      alpha: Math.random()*0.35+0.05,
+      color: colors[Math.floor(Math.random()*colors.length)]
     }));
 
     (function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      hearts.forEach(h => {
-        h.y += h.speed;
-        h.wobble += h.wobbleSpeed;
-        h.x += Math.sin(h.wobble) * 0.5;
-        if (h.y > canvas.height + 40) {
-          h.y = -40;
-          h.x = Math.random() * canvas.width;
-        }
-        ctx.save();
-        ctx.globalAlpha = h.alpha;
-        ctx.fillStyle = h.color;
-        heartPath(ctx, h.x, h.y, h.size);
-        ctx.fill();
-        ctx.restore();
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      hearts.forEach(h=>{
+        h.y+=h.speed; h.wobble+=h.wobbleSpeed; h.x+=Math.sin(h.wobble)*0.5;
+        if(h.y>canvas.height+40){h.y=-40;h.x=Math.random()*canvas.width;}
+        ctx.save(); ctx.globalAlpha=h.alpha; ctx.fillStyle=h.color;
+        heartPath(ctx,h.x,h.y,h.size); ctx.fill(); ctx.restore();
       });
       requestAnimationFrame(animate);
     })();
 
-    // Click burst
+    // click burst
     $(document).on('click', function(e) {
-      for (let i = 0; i < 10; i++) {
-        const $h = $('<div>').text('♥').css({
-          position:'fixed', left:e.clientX, top:e.clientY,
-          color: colors[Math.floor(Math.random()*colors.length)],
-          fontSize: (Math.random()*16+10)+'px',
-          pointerEvents:'none', zIndex:9998,
+      if($(e.target).is('#clickBtn')) return;
+      for(let i=0;i<10;i++){
+        const $h=$('<div>').text('♥').css({
+          position:'fixed',left:e.clientX,top:e.clientY,
+          color:colors[Math.floor(Math.random()*colors.length)],
+          fontSize:(Math.random()*16+10)+'px',
+          pointerEvents:'none',zIndex:9998,
           transform:'translate(-50%,-50%)',
-          transition:`all ${0.8+Math.random()*0.4}s ease-out`,
-          opacity:1
+          transition:`all ${0.8+Math.random()*0.4}s ease-out`,opacity:1
         }).appendTo('body');
         const dx=(Math.random()-0.5)*140, dy=-(Math.random()*110+40);
         setTimeout(()=>$h.css({transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`,opacity:0}),10);
         setTimeout(()=>$h.remove(),1200);
       }
+    });
+
+    // ── REVEAL on button click ──
+    $('#clickBtn').on('click', function() {
+
+      // hide splash with animation
+      $('#splash').addClass('hide');
+
+      // show page
+      setTimeout(()=>{
+        $('#mainPage').addClass('visible');
+
+        // stagger each element
+        const $el = $('#mainPage');
+        setTimeout(()=> $el.find('.ornament').addClass('reveal'), 200);
+        setTimeout(()=> $el.find('.tag').addClass('reveal'), 400);
+        setTimeout(()=> $el.find('.title').addClass('reveal'), 600);
+        setTimeout(()=> $el.find('.photo-wrap').addClass('reveal'), 1000);
+        setTimeout(()=> $el.find('.divider').addClass('reveal'), 1400);
+
+        // poem lines one by one
+        $el.find('.poem-line').each(function(i){
+          setTimeout(()=> $(this).addClass('visible'), 1700 + i*300);
+        });
+
+        const lastPoem = 1700 + $('.poem-line').length * 300;
+        setTimeout(()=> $el.find('.heart-row').addClass('reveal'), lastPoem + 100);
+        setTimeout(()=> $el.find('.signature').addClass('reveal'), lastPoem + 400);
+        setTimeout(()=> $el.find('.bottom-ornament').addClass('reveal'), lastPoem + 700);
+
+      }, 600);
     });
 
   });
