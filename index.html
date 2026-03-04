@@ -196,9 +196,25 @@
 <canvas id="heartCanvas"></canvas>
 
 <!-- ══════════════════════════
+     SCREEN 0 — ENTRY
+══════════════════════════ -->
+<div class="screen active" id="s0">
+  <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;">
+    <div style="font-size:3rem;animation:pulse-dim 2s ease-in-out infinite;">♥</div>
+    <div style="font-family:'Great Vibes',cursive;font-size:clamp(1.2rem,4vw,2rem);color:#3a0010;letter-spacing:0.05em;">
+      A surprise is waiting for you…
+    </div>
+    <button class="btn" id="btnEntry" style="font-size:0.8rem;padding:20px 60px;letter-spacing:0.6em;">
+      Click Here
+    </button>
+    <div class="splash-hint">touch to begin</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════
      SCREEN 1 — SPLASH
 ══════════════════════════ -->
-<div class="screen active" id="s1">
+<div class="screen" id="s1">
   <div class="splash-hearts">♥ ♥ ♥</div>
   <div class="splash-text">Something special is waiting for you…</div>
   <button class="btn" id="btnOpen">✦ Open ✦</button>
@@ -360,6 +376,9 @@ $(document).ready(function(){
       }, 700);
     }, delay);
   }
+
+  // ── S0 → S1 ──
+  $('#btnEntry').on('click',function(){ goTo('s0','s1'); });
 
   // ── S1 → S2 ──
   $('#btnOpen').on('click',function(){ goTo('s1','s2'); });
