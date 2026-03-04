@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ingénieur</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Montserrat:wght@100;200&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <style>
+    :root {
+      --rose-pastel: #f4a7b9;
+      --rose-light: #fde8ee;
+      --rose-deep: #e07a96;
+      --cream: #fdf6f0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--cream);
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Soft background blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .blob-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #f9c8d6 0%, transparent 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .blob-2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #fbd5e0 0%, transparent 70%);
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .blob-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, #f4a7b920 0%, transparent 70%);
+      top: 40%;
+      left: 30%;
+    }
+
+    /* Decorative lines */
+    .line-left,
+    .line-right {
+      position: fixed;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rose-pastel), transparent);
+      opacity: 0;
+      transition: opacity 1.5s ease 0.8s, height 1.5s ease 0.8s;
+      height: 0;
+    }
+
+    .line-left {
+      left: 60px;
+      top: 10%;
+    }
+
+    .line-right {
+      right: 60px;
+      top: 10%;
+    }
+
+    /* Center content */
+    .center {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .label {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 100;
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      color: var(--rose-deep);
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 1s ease 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .main-word {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(4rem, 12vw, 9rem);
+      color: var(--rose-pastel);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s;
+      position: relative;
+      cursor: default;
+      user-select: none;
+    }
+
+    .main-word::after {
+      content: '';
+      display: block;
+      width: 0%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose-pastel), transparent);
+      margin: 20px auto 0;
+      transition: width 1.5s ease 1.8s;
+    }
+
+    .tagline {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 100;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: #c9879a;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 1s ease 1.4s;
+      margin-top: 28px;
+    }
+
+    /* Dots */
+    .dots {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--rose-pastel);
+      opacity: 0;
+    }
+
+    /* Loaded state */
+    body.loaded .blob { opacity: 1; }
+    body.loaded .line-left,
+    body.loaded .line-right { opacity: 1; height: 80%; }
+    body.loaded .label { opacity: 1; transform: translateY(0); }
+    body.loaded .main-word { opacity: 1; transform: translateY(0); }
+    body.loaded .main-word::after { width: 80%; }
+    body.loaded .tagline { opacity: 1; transform: translateY(0); }
+
+    /* Hover shimmer on the word */
+    .main-word:hover {
+      color: var(--rose-deep);
+      transition: color 0.4s ease;
+    }
+
+    @media (max-width: 600px) {
+      .line-left, .line-right { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Decorative vertical lines -->
+  <div class="line-left"></div>
+  <div class="line-right"></div>
+
+  <!-- Floating dots canvas -->
+  <div class="dots" id="dots"></div>
+
+  <!-- Main content -->
+  <div class="center">
+    <p class="label">— identité —</p>
+    <h1 class="main-word" id="mainWord">Ingénieur</h1>
+    <p class="tagline">passion · précision · innovation</p>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+
+      // Trigger entrance animations
+      setTimeout(() => $('body').addClass('loaded'), 100);
+
+      // Generate floating dots
+      const $dots = $('#dots');
+      for (let i = 0; i < 18; i++) {
+        const size = Math.random() * 5 + 2;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const delay = Math.random() * 4;
+        const duration = Math.random() * 6 + 5;
+
+        $('<div class="dot">').css({
+          width: size,
+          height: size,
+          left: x + '%',
+          top: y + '%',
+          animation: `floatDot ${duration}s ease-in-out ${delay}s infinite alternate`
+        }).appendTo($dots);
+      }
+
+      // Parallax on mouse move
+      $(document).on('mousemove', function (e) {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const dx = (e.clientX - cx) / cx;
+        const dy = (e.clientY - cy) / cy;
+
+        $('.blob-1').css('transform', `translate(${dx * 20}px, ${dy * 20}px)`);
+        $('.blob-2').css('transform', `translate(${-dx * 15}px, ${-dy * 15}px)`);
+        $('.blob-3').css('transform', `translate(${dx * 10}px, ${dy * 10}px)`);
+        $('#mainWord').css('transform', `translate(${dx * 6}px, ${dy * 6}px)`);
+      });
+
+      // Letter-by-letter ripple on click
+      $('#mainWord').on('click', function () {
+        const word = $(this).text();
+        $(this).html('');
+        [...word].forEach((ch, i) => {
+          const $s = $('<span>').text(ch === ' ' ? '\u00a0' : ch).css({
+            display: 'inline-block',
+            transition: `transform 0.4s ease ${i * 0.05}s, color 0.4s ease ${i * 0.05}s`,
+          });
+          $(this).append($s);
+          setTimeout(() => $s.css({ transform: 'translateY(-12px)', color: '#e07a96' }), 50);
+          setTimeout(() => $s.css({ transform: 'translateY(0)', color: '' }), 500 + i * 50);
+        });
+      });
+
+    });
+  </script>
+
+  <style>
+    @keyframes floatDot {
+      0%   { opacity: 0.08; transform: translateY(0px); }
+      100% { opacity: 0.25; transform: translateY(-18px); }
+    }
+  </style>
+
+</body>
+</html>
