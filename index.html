@@ -427,21 +427,24 @@ $(document).ready(function(){
     }, delay);
   }
 
-  // ── S0 → S1 with big kiss ──
-  $('#btnEntry').on('click',function(){
+  // ── kiss then go helper ──
+  function kissAndGo(fromId, toId){
     const $k = $('#bigKiss');
     $k.css('opacity',1).addClass('animate');
     setTimeout(function(){
       $k.removeClass('animate').css('opacity',0);
-      goTo('s0','s1');
+      goTo(fromId, toId);
     }, 1600);
-  });
+  }
 
-  // ── S1 → S2 ──
-  $('#btnOpen').on('click',function(){ goTo('s1','s2'); });
+  // ── S0 → S1 with kiss ──
+  $('#btnEntry').on('click',function(){ kissAndGo('s0','s1'); });
 
-  // ── S2 YES → S4 ──
-  $('#btnYes').on('click',function(){ goTo('s2','s4'); });
+  // ── S1 → S2 with kiss ──
+  $('#btnOpen').on('click',function(){ kissAndGo('s1','s2'); });
+
+  // ── S2 YES → S4 with kiss ──
+  $('#btnYes').on('click',function(){ kissAndGo('s2','s4'); });
 
   // ── S2 NO → S3 ──
   $('#btnNo').on('click',function(){ goTo('s2','s3'); });
