@@ -10,347 +10,385 @@
     :root {
       --red: #c0152a;
       --red-soft: #e8304a;
+      --red-deep: #8b0000;
       --gold: #c9a96e;
+      --amber: #f5a623;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { width: 100%; min-height: 100vh; background: #0d0003; font-family: 'Lato', sans-serif; overflow-x: hidden; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; min-height:100vh; background:#0d0003; font-family:'Lato',sans-serif; overflow-x:hidden; }
 
-    /* ── SPLASH SCREEN ── */
-    #splash {
-      position: fixed; inset: 0; z-index: 1000;
-      background: #0d0003;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 30px;
-      transition: opacity 1.2s ease, visibility 1.2s ease;
-    }
-    #splash.hide { opacity: 0; visibility: hidden; }
-
-    .splash-hearts {
-      font-size: 2rem; letter-spacing: 0.6em;
-      color: #3a000f;
-      animation: pulse-dim 2s ease-in-out infinite;
-    }
-    @keyframes pulse-dim {
-      0%,100% { color: #3a000f; } 50% { color: #6b0018; }
-    }
-
-    .splash-text {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      color: #5a1020;
-      letter-spacing: 0.05em;
-    }
-
-    #clickBtn {
-      background: none;
-      border: 1px solid #c0152a88;
-      color: #e8304a;
-      font-family: 'Lato', sans-serif;
-      font-weight: 100;
-      font-size: 0.75rem;
-      letter-spacing: 0.5em;
-      text-transform: uppercase;
-      padding: 18px 50px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-      outline: none;
-    }
-    #clickBtn::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: var(--red);
-      transform: translateX(-100%);
-      transition: transform 0.4s ease;
-      z-index: -1;
-    }
-    #clickBtn:hover { color: #fff; border-color: var(--red); letter-spacing: 0.6em; }
-    #clickBtn:hover::before { transform: translateX(0); }
-
-    .splash-hint {
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
-      color: #4a1020;
-      text-transform: uppercase;
-      animation: blink 2.5s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
-
-    /* ── MAIN PAGE ── */
+    /* ── SHARED BG ── */
     .bg-gradient {
-      position: fixed; inset: 0; z-index: 0;
+      position:fixed; inset:0; z-index:0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%,   #3d0010 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 20% 80%,  #2a000a 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% 0%, #3d0010 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, #2a000a 0%, transparent 60%),
         #0d0003;
+      transition: background 1.5s ease;
     }
-    #heartCanvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-    .orb { position: fixed; border-radius: 50%; filter: blur(90px); pointer-events: none; z-index: 2; }
+    #heartCanvas { position:fixed; inset:0; z-index:1; pointer-events:none; }
+    .orb { position:fixed; border-radius:50%; filter:blur(90px); pointer-events:none; z-index:2; }
     .orb-1 { width:400px;height:400px;background:#8b000033;top:-100px;left:-100px;animation:drift 12s ease-in-out infinite alternate;}
     .orb-2 { width:350px;height:350px;background:#c0152a22;bottom:-80px;right:-80px;animation:drift 10s ease-in-out 2s infinite alternate-reverse;}
     @keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(30px,20px) scale(1.1);} }
 
-    .page {
-      position: relative; z-index: 10;
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 60px 24px;
-      opacity: 0; transition: opacity 1.5s ease 0.3s;
+    /* ── SCREEN BASE ── */
+    .screen {
+      display:none;
+      position:relative; z-index:10;
+      min-height:100vh; width:100%;
+      flex-direction:column; align-items:center; justify-content:center;
+      padding:60px 24px; gap:0;
+      opacity:0; transition:opacity 0.8s ease;
     }
-    .page.visible { opacity: 1; }
+    .screen.active { display:flex; }
+    .screen.visible { opacity:1; }
 
-    .ornament {
-      font-size: 2rem; letter-spacing: 0.4em; color: var(--red-soft);
-      opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease; transform: translateY(15px);
-      margin-bottom: 10px;
+    /* ── BUTTONS ── */
+    .btn {
+      background:none;
+      border:1px solid #c0152a88;
+      color:#e8304a;
+      font-family:'Lato',sans-serif; font-weight:100;
+      font-size:0.75rem; letter-spacing:0.5em; text-transform:uppercase;
+      padding:16px 44px; cursor:pointer; position:relative; overflow:hidden;
+      transition:all 0.4s ease; outline:none; margin:6px;
     }
-    .tag {
-      font-weight: 100; font-size: 0.6rem; letter-spacing: 0.55em; text-transform: uppercase;
-      color: #b06070;
-      opacity: 0; transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s; transform: translateY(15px);
-      margin-bottom: 28px;
+    .btn::before {
+      content:''; position:absolute; inset:0;
+      background:var(--red); transform:translateX(-100%);
+      transition:transform 0.4s ease; z-index:-1;
     }
-    .title {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(3.5rem, 11vw, 8rem);
-      color: var(--red-soft); text-align: center; line-height: 1.1;
-      text-shadow: 0 0 40px #e8304a55, 0 0 80px #c0152a33;
-      opacity: 0; transition: opacity 1s ease 0.4s, transform 1s ease 0.4s; transform: translateY(25px);
-      margin-bottom: 10px;
-    }
-    .title span {
-      display: block; font-size: clamp(2.2rem, 7vw, 5rem);
-      color: #fff0f3; text-shadow: 0 0 30px #ff000033;
-    }
+    .btn:hover { color:#fff; border-color:var(--red); letter-spacing:0.6em; }
+    .btn:hover::before { transform:translateX(0); }
 
-    /* ── PHOTO ── */
-    .photo-wrap {
-      margin: 28px 0;
-      opacity: 0; transition: opacity 1.2s ease 0.8s, transform 1.2s ease 0.8s; transform: scale(0.85);
-      position: relative;
+    .btn-yes {
+      border-color:#c0152a88; color:#e8304a;
     }
-    .photo-wrap img {
-      width: clamp(200px, 50vw, 320px);
-      height: clamp(200px, 50vw, 320px);
-      object-fit: cover;
-      border-radius: 50%;
-      border: 3px solid #c0152a66;
-      box-shadow:
-        0 0 0 6px #1a000744,
-        0 0 40px #e8304a44,
-        0 0 80px #c0152a22;
-      display: block;
+    .btn-no {
+      border-color:#44444488; color:#888;
     }
-    .photo-wrap::before, .photo-wrap::after {
-      content: '♥';
-      position: absolute;
-      font-size: 1.4rem; color: var(--red-soft);
-      animation: float-heart 3s ease-in-out infinite alternate;
-    }
-    .photo-wrap::before { top: -10px; left: -10px; animation-delay: 0s; }
-    .photo-wrap::after  { bottom: -10px; right: -10px; animation-delay: 1s; }
-    @keyframes float-heart { from{transform:translateY(0);} to{transform:translateY(-10px);} }
+    .btn-no::before { background:#333; }
+    .btn-no:hover { color:#fff; border-color:#555; letter-spacing:0.6em; }
 
+    .btn-gold {
+      border-color:#c9a96e88; color:var(--gold);
+    }
+    .btn-gold::before { background:#7a5c2a; }
+    .btn-gold:hover { color:#fff; border-color:var(--gold); }
+
+    /* ── TYPOGRAPHY SHARED ── */
+    .ornament { font-size:2rem; letter-spacing:0.4em; color:var(--red-soft); margin-bottom:10px; }
+    .tag { font-weight:100; font-size:0.6rem; letter-spacing:0.55em; text-transform:uppercase; color:#b06070; margin-bottom:24px; }
     .divider {
-      display: flex; align-items: center; gap: 16px;
-      margin: 24px 0;
-      opacity: 0; transition: opacity 0.8s ease 1s, transform 0.8s ease 1s; transform: translateY(10px);
-      width: min(500px, 90vw);
+      display:flex; align-items:center; gap:16px; margin:24px 0;
+      width:min(500px, 90vw);
     }
-    .divider-line { flex:1; height:1px; background: linear-gradient(to right, transparent, var(--red), transparent); }
-    .divider-heart { color: var(--red-soft); font-size: 1.1rem; }
+    .divider-line { flex:1; height:1px; background:linear-gradient(to right,transparent,var(--red),transparent); }
+    .divider-heart { color:var(--red-soft); font-size:1.1rem; }
+    .heart-row { font-size:1.4rem; letter-spacing:0.5em; color:var(--red); margin:10px 0; }
+    .signature { font-family:'Great Vibes',cursive; font-size:clamp(2rem,6vw,3.5rem); color:var(--gold); text-shadow:0 0 20px #c9a96e44; margin-top:18px; }
 
-    .poem {
-      display: flex; flex-direction: column; align-items: center; gap: 22px;
-      width: min(620px, 92vw);
-    }
-    .poem-line {
-      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 300;
-      text-align: center; color: #f9dde3;
-      opacity: 0; transform: translateY(20px);
-      line-height: 1.7;
-    }
-    .poem-line.lg { font-size: clamp(1.1rem, 3.5vw, 1.5rem); }
-    .poem-line.md { font-size: clamp(0.95rem, 2.8vw, 1.2rem); color: #e8b8c2; }
-    .poem-line.sm { font-size: clamp(0.8rem, 2.2vw, 1rem); color: #c98a98; }
-    .poem-line.visible { transition: opacity 0.9s ease, transform 0.9s ease; opacity: 1; transform: translateY(0); }
+    /* ────────────────────────────
+       SCREEN 1 — SPLASH
+    ──────────────────────────── */
+    #s1 { gap:28px; }
+    .splash-hearts { font-size:2rem; letter-spacing:0.6em; color:#3a000f; animation:pulse-dim 2s ease-in-out infinite; }
+    @keyframes pulse-dim { 0%,100%{color:#3a000f;} 50%{color:#6b0018;} }
+    .splash-text { font-family:'Great Vibes',cursive; font-size:clamp(1.5rem,5vw,2.5rem); color:#5a1020; }
+    .splash-hint { font-size:0.55rem; letter-spacing:0.3em; color:#4a1020; text-transform:uppercase; animation:blink 2.5s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
 
-    .heart-row {
-      font-size: 1.4rem; letter-spacing: 0.5em; color: var(--red);
-      opacity: 0; transition: opacity 0.8s ease; margin: 10px 0;
+    /* ────────────────────────────
+       SCREEN 2 — DO YOU LOVE ME?
+    ──────────────────────────── */
+    #s2 { gap:24px; text-align:center; }
+    .question-text {
+      font-family:'Playfair Display',serif; font-style:italic; font-weight:300;
+      font-size:clamp(1.6rem,6vw,3.2rem); color:#f9dde3;
+      text-shadow:0 0 30px #e8304a33;
+      line-height:1.4; max-width:600px;
     }
-    .signature {
-      font-family: 'Great Vibes', cursive;
-      font-size: clamp(2rem, 6vw, 3.5rem); color: var(--gold);
-      text-shadow: 0 0 20px #c9a96e44;
-      opacity: 0; transition: opacity 1s ease; margin-top: 18px;
-    }
-    .bottom-ornament {
-      margin-top: 36px; font-size: 1.6rem; letter-spacing: 0.6em; color: #8b2030;
-      opacity: 0; transition: opacity 0.8s ease;
-    }
+    .question-sub { font-weight:100; font-size:0.7rem; letter-spacing:0.4em; color:#b06070; text-transform:uppercase; margin-top:6px; }
+    .btn-row { display:flex; gap:16px; margin-top:10px; flex-wrap:wrap; justify-content:center; }
 
-    /* reveal class for non-poem elements */
-    .reveal { opacity: 1 !important; transform: scale(1) translateY(0) !important; }
+    /* ────────────────────────────
+       SCREEN 3 — SAD CAT (NO)
+    ──────────────────────────── */
+    #s3 { gap:20px; text-align:center; }
+    .cat-wrap img {
+      width:clamp(160px,40vw,240px); border-radius:12px;
+      border:2px solid #44444466;
+      box-shadow:0 0 30px #00000066;
+      filter:grayscale(30%);
+    }
+    .shame-title {
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(2rem,7vw,3.5rem);
+      color:#888; text-shadow:0 0 20px #33333344;
+    }
+    .shame-sub { font-weight:100; font-size:0.7rem; letter-spacing:0.4em; color:#555; text-transform:uppercase; }
 
-    body { cursor: none; }
+    /* ────────────────────────────
+       SCREEN 4 — FUSE / LIGHT
+    ──────────────────────────── */
+    #s4 { gap:18px; text-align:center; }
+    .fuse-title {
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(3rem,10vw,7rem);
+      color:#f5a623;
+      text-shadow:0 0 40px #f5a62366, 0 0 80px #f5a62322;
+      line-height:1.1;
+    }
+    .fuse-sub {
+      font-family:'Playfair Display',serif; font-style:italic; font-weight:300;
+      font-size:clamp(1rem,3vw,1.4rem); color:#fde8b0; line-height:1.8;
+      max-width:520px;
+    }
+    /* flame/glow bg for screen 4 */
+    #s4 .glow-orb {
+      position:fixed; border-radius:50%; filter:blur(100px); pointer-events:none; z-index:2;
+    }
+    .glow-amber-1 { width:500px;height:400px;background:#f5a62315;top:0;left:50%;transform:translateX(-50%); }
+    .glow-amber-2 { width:300px;height:300px;background:#e8304a10;bottom:0;left:20%; }
+
+    /* ────────────────────────────
+       SCREEN 5 — BIRTHDAY FINALE
+    ──────────────────────────── */
+    #s5 { gap:18px; }
+    .main-title {
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(3.5rem,11vw,8rem);
+      color:var(--red-soft); text-align:center; line-height:1.1;
+      text-shadow:0 0 40px #e8304a55, 0 0 80px #c0152a33;
+    }
+    .main-title span { display:block; font-size:clamp(2.2rem,7vw,5rem); color:#fff0f3; text-shadow:0 0 30px #ff000033; }
+    .photo-wrap { position:relative; margin:8px 0; }
+    .photo-wrap img {
+      width:clamp(180px,45vw,300px); height:clamp(180px,45vw,300px);
+      object-fit:cover; border-radius:50%;
+      border:3px solid #c0152a66;
+      box-shadow:0 0 0 6px #1a000744, 0 0 40px #e8304a44, 0 0 80px #c0152a22;
+      display:block;
+    }
+    .photo-wrap::before,.photo-wrap::after { content:'♥'; position:absolute; font-size:1.4rem; color:var(--red-soft); animation:float-heart 3s ease-in-out infinite alternate; }
+    .photo-wrap::before { top:-10px;left:-10px;animation-delay:0s; }
+    .photo-wrap::after  { bottom:-10px;right:-10px;animation-delay:1s; }
+    @keyframes float-heart { from{transform:translateY(0);} to{transform:translateY(-10px);} }
+    .poem { display:flex; flex-direction:column; align-items:center; gap:18px; width:min(620px,92vw); }
+    .poem-line { font-family:'Playfair Display',serif; font-style:italic; font-weight:300; text-align:center; color:#f9dde3; opacity:0; transform:translateY(20px); line-height:1.7; }
+    .poem-line.lg { font-size:clamp(1.1rem,3.5vw,1.5rem); }
+    .poem-line.md { font-size:clamp(0.95rem,2.8vw,1.2rem); color:#e8b8c2; }
+    .poem-line.sm { font-size:clamp(0.8rem,2.2vw,1rem); color:#c98a98; }
+    .poem-line.visible { transition:opacity 0.9s ease,transform 0.9s ease; opacity:1; transform:translateY(0); }
+
+    /* cursor */
+    body { cursor:none; }
     #cursor { position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); font-size:16px; line-height:1; }
   </style>
 </head>
 <body>
 
-  <div id="cursor">🤍</div>
+<div id="cursor">🤍</div>
+<div class="bg-gradient"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<canvas id="heartCanvas"></canvas>
 
-  <!-- SPLASH -->
-  <div id="splash">
-    <div class="splash-hearts">♥ ♥ ♥</div>
-    <div class="splash-text">Something special is waiting for you…</div>
-    <button id="clickBtn">✦ Open ✦</button>
-    <div class="splash-hint">click to reveal</div>
+<!-- ══════════════════════════
+     SCREEN 1 — SPLASH
+══════════════════════════ -->
+<div class="screen active" id="s1">
+  <div class="splash-hearts">♥ ♥ ♥</div>
+  <div class="splash-text">Something special is waiting for you…</div>
+  <button class="btn" id="btnOpen">✦ Open ✦</button>
+  <div class="splash-hint">click to reveal</div>
+</div>
+
+<!-- ══════════════════════════
+     SCREEN 2 — DO YOU LOVE ME?
+══════════════════════════ -->
+<div class="screen" id="s2">
+  <div class="ornament">♥</div>
+  <p class="question-text">" Do you know… I love you ? "</p>
+  <p class="question-sub">be honest with your heart</p>
+  <div class="btn-row">
+    <button class="btn btn-yes" id="btnYes">♥ &nbsp; Yes, I do</button>
+    <button class="btn btn-no"  id="btnNo">No…</button>
   </div>
+</div>
 
-  <!-- MAIN -->
-  <div class="bg-gradient"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <canvas id="heartCanvas"></canvas>
-
-  <div class="page" id="mainPage">
-    <div class="ornament">♥ ♥ ♥</div>
-    <p class="tag">a message from the heart</p>
-
-    <h1 class="title">
-      Happy Birthday
-      <span>to the Love of my Life</span>
-    </h1>
-
-    <!-- PHOTO — place us.jpg / us.png next to index.html -->
-    <div class="photo-wrap">
-      <img src="us.jfif" alt="Us" />
-    </div>
-
-    <div class="divider">
-      <div class="divider-line"></div>
-      <span class="divider-heart">♥</span>
-      <div class="divider-line"></div>
-    </div>
-
-    <div class="poem">
-      <p class="poem-line lg">You are my sunrise and my stars,</p>
-      <p class="poem-line lg">the reason my heart knows how to beat.</p>
-      <p class="poem-line md">Every moment with you is a gift I never deserve —<br>yet you give it endlessly, unconditionally.</p>
-      <p class="poem-line md">You are my favorite adventure,<br>my safest place, my greatest love.</p>
-      <p class="poem-line sm">On this day you were born, the world became more beautiful —<br>and I became the luckiest soul alive.</p>
-      <p class="poem-line sm">I love you beyond words, beyond time,<br>beyond every lifetime I could ever live.</p>
-      <p class="poem-line sm">You are everything I never knew I needed,<br>and everything I will always choose.</p>
-    </div>
-
-    <div class="heart-row">♥ ♥ ♥ ♥ ♥</div>
-    <div class="signature">Forever yours ♥</div>
-    <div class="bottom-ornament">✦ ♥ ✦</div>
+<!-- ══════════════════════════
+     SCREEN 3 — SAD CAT
+══════════════════════════ -->
+<div class="screen" id="s3">
+  <div class="shame-title">Shame on you…</div>
+  <div class="cat-wrap">
+    <img src="cat.png" alt="sad cat"/>
   </div>
+  <p class="shame-sub">even this cat is disappointed in you</p>
+  <button class="btn" id="btnReturn" style="margin-top:20px; color:#aaa; border-color:#44444488; letter-spacing:0.4em;">
+    ↩ &nbsp; Return & click Yes
+  </button>
+</div>
 
-  <script>
-  $(document).ready(function () {
+<!-- ══════════════════════════
+     SCREEN 4 — YOU'RE MY FUSE
+══════════════════════════ -->
+<div class="screen" id="s4">
+  <div class="glow-orb glow-amber-1"></div>
+  <div class="glow-orb glow-amber-2"></div>
+  <div class="ornament" style="color:#f5a623;">✦ ✦ ✦</div>
+  <div class="fuse-title">You're the fuse<br>of my life ✦</div>
+  <div class="divider" style="margin:16px 0;">
+    <div class="divider-line" style="background:linear-gradient(to right,transparent,#f5a623,transparent);"></div>
+    <span style="color:#f5a623; font-size:1.1rem;">✦</span>
+    <div class="divider-line" style="background:linear-gradient(to right,transparent,#f5a623,transparent);"></div>
+  </div>
+  <p class="fuse-sub">
+    You make my life brighter just by existing.<br>
+    You shine through my darkest days<br>
+    like a flame that never fades —<br>
+    <em>warm, golden, and endlessly beautiful.</em>
+  </p>
+  <button class="btn btn-gold" id="btnMore" style="margin-top:28px;">
+    ✦ &nbsp; See more &nbsp; ✦
+  </button>
+</div>
 
-    // cursor
-    $(document).on('mousemove', function(e) {
-      $('#cursor').css({ left: e.clientX, top: e.clientY });
+<!-- ══════════════════════════
+     SCREEN 5 — BIRTHDAY FINALE
+══════════════════════════ -->
+<div class="screen" id="s5">
+  <div class="ornament">♥ ♥ ♥</div>
+  <p class="tag">a message from the heart</p>
+  <h1 class="main-title">
+    Happy Birthday
+    <span>to the Love of my Life</span>
+  </h1>
+  <div class="photo-wrap" style="margin:20px 0;">
+    <img src="us.jfif" alt="Us"/>
+  </div>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-heart">♥</span>
+    <div class="divider-line"></div>
+  </div>
+  <div class="poem">
+    <p class="poem-line lg">You are my sunrise and my stars,</p>
+    <p class="poem-line lg">the reason my heart knows how to beat.</p>
+    <p class="poem-line md">Every moment with you is a gift I never deserve —<br>yet you give it endlessly, unconditionally.</p>
+    <p class="poem-line md">You are my favorite adventure,<br>my safest place, my greatest love.</p>
+    <p class="poem-line sm">On this day you were born, the world became more beautiful —<br>and I became the luckiest soul alive.</p>
+    <p class="poem-line sm">I love you beyond words, beyond time,<br>beyond every lifetime I could ever live.</p>
+    <p class="poem-line sm">You are everything I never knew I needed,<br>and everything I will always choose.</p>
+  </div>
+  <div class="heart-row" style="opacity:0;transition:opacity 0.8s ease;" id="finalHearts">♥ ♥ ♥ ♥ ♥</div>
+  <div class="signature" style="opacity:0;transition:opacity 1s ease;" id="finalSig">Forever yours ♥</div>
+  <div style="margin-top:36px;font-size:1.6rem;letter-spacing:0.6em;color:#8b2030;opacity:0;transition:opacity 0.8s ease;" id="finalOrnament">✦ ♥ ✦</div>
+</div>
+
+<script>
+$(document).ready(function(){
+
+  // cursor
+  $(document).on('mousemove',function(e){ $('#cursor').css({left:e.clientX,top:e.clientY}); });
+
+  // ── hearts canvas ──
+  const canvas=document.getElementById('heartCanvas');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+
+  function heartPath(ctx,x,y,size){
+    ctx.save();ctx.translate(x,y);ctx.scale(size,size);
+    ctx.beginPath();ctx.moveTo(0,-0.3);
+    ctx.bezierCurveTo(0,-1,1.2,-1,1.2,0.1);
+    ctx.bezierCurveTo(1.2,1,0,1.6,0,1.6);
+    ctx.bezierCurveTo(0,1.6,-1.2,1,-1.2,0.1);
+    ctx.bezierCurveTo(-1.2,-1,0,-1,0,-0.3);
+    ctx.closePath();ctx.restore();
+  }
+
+  const colors=['#c0152a','#e8304a','#ff6b80','#ff4466','#8b0000'];
+  const hearts=Array.from({length:40},()=>({
+    x:Math.random()*window.innerWidth,
+    y:Math.random()*window.innerHeight-window.innerHeight,
+    size:Math.random()*7+3, speed:Math.random()*0.8+0.3,
+    wobble:Math.random()*Math.PI*2, wobbleSpeed:(Math.random()-0.5)*0.02,
+    alpha:Math.random()*0.35+0.05, color:colors[Math.floor(Math.random()*colors.length)]
+  }));
+
+  (function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    hearts.forEach(h=>{
+      h.y+=h.speed;h.wobble+=h.wobbleSpeed;h.x+=Math.sin(h.wobble)*0.5;
+      if(h.y>canvas.height+40){h.y=-40;h.x=Math.random()*canvas.width;}
+      ctx.save();ctx.globalAlpha=h.alpha;ctx.fillStyle=h.color;
+      heartPath(ctx,h.x,h.y,h.size);ctx.fill();ctx.restore();
     });
+    requestAnimationFrame(animate);
+  })();
 
-    // ── Hearts canvas ──
-    const canvas = document.getElementById('heartCanvas');
-    const ctx = canvas.getContext('2d');
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize(); window.addEventListener('resize', resize);
-
-    function heartPath(ctx, x, y, size) {
-      ctx.save(); ctx.translate(x,y); ctx.scale(size,size);
-      ctx.beginPath();
-      ctx.moveTo(0,-0.3);
-      ctx.bezierCurveTo(0,-1,1.2,-1,1.2,0.1);
-      ctx.bezierCurveTo(1.2,1,0,1.6,0,1.6);
-      ctx.bezierCurveTo(0,1.6,-1.2,1,-1.2,0.1);
-      ctx.bezierCurveTo(-1.2,-1,0,-1,0,-0.3);
-      ctx.closePath(); ctx.restore();
+  // click burst
+  $(document).on('click',function(e){
+    if($(e.target).is('button')) return;
+    for(let i=0;i<8;i++){
+      const $h=$('<div>').text('♥').css({
+        position:'fixed',left:e.clientX,top:e.clientY,
+        color:colors[Math.floor(Math.random()*colors.length)],
+        fontSize:(Math.random()*16+10)+'px',
+        pointerEvents:'none',zIndex:9998,
+        transform:'translate(-50%,-50%)',
+        transition:`all ${0.8+Math.random()*0.4}s ease-out`,opacity:1
+      }).appendTo('body');
+      const dx=(Math.random()-0.5)*130,dy=-(Math.random()*100+40);
+      setTimeout(()=>$h.css({transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`,opacity:0}),10);
+      setTimeout(()=>$h.remove(),1200);
     }
-
-    const colors = ['#c0152a','#e8304a','#ff6b80','#ff4466','#8b0000'];
-    const hearts = Array.from({length:40},()=>({
-      x: Math.random()*window.innerWidth,
-      y: Math.random()*window.innerHeight - window.innerHeight,
-      size: Math.random()*7+3,
-      speed: Math.random()*0.8+0.3,
-      wobble: Math.random()*Math.PI*2,
-      wobbleSpeed: (Math.random()-0.5)*0.02,
-      alpha: Math.random()*0.35+0.05,
-      color: colors[Math.floor(Math.random()*colors.length)]
-    }));
-
-    (function animate() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      hearts.forEach(h=>{
-        h.y+=h.speed; h.wobble+=h.wobbleSpeed; h.x+=Math.sin(h.wobble)*0.5;
-        if(h.y>canvas.height+40){h.y=-40;h.x=Math.random()*canvas.width;}
-        ctx.save(); ctx.globalAlpha=h.alpha; ctx.fillStyle=h.color;
-        heartPath(ctx,h.x,h.y,h.size); ctx.fill(); ctx.restore();
-      });
-      requestAnimationFrame(animate);
-    })();
-
-    // click burst
-    $(document).on('click', function(e) {
-      if($(e.target).is('#clickBtn')) return;
-      for(let i=0;i<10;i++){
-        const $h=$('<div>').text('♥').css({
-          position:'fixed',left:e.clientX,top:e.clientY,
-          color:colors[Math.floor(Math.random()*colors.length)],
-          fontSize:(Math.random()*16+10)+'px',
-          pointerEvents:'none',zIndex:9998,
-          transform:'translate(-50%,-50%)',
-          transition:`all ${0.8+Math.random()*0.4}s ease-out`,opacity:1
-        }).appendTo('body');
-        const dx=(Math.random()-0.5)*140, dy=-(Math.random()*110+40);
-        setTimeout(()=>$h.css({transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`,opacity:0}),10);
-        setTimeout(()=>$h.remove(),1200);
-      }
-    });
-
-    // ── REVEAL on button click ──
-    $('#clickBtn').on('click', function() {
-
-      // hide splash with animation
-      $('#splash').addClass('hide');
-
-      // show page
-      setTimeout(()=>{
-        $('#mainPage').addClass('visible');
-
-        // stagger each element
-        const $el = $('#mainPage');
-        setTimeout(()=> $el.find('.ornament').addClass('reveal'), 200);
-        setTimeout(()=> $el.find('.tag').addClass('reveal'), 400);
-        setTimeout(()=> $el.find('.title').addClass('reveal'), 600);
-        setTimeout(()=> $el.find('.photo-wrap').addClass('reveal'), 1000);
-        setTimeout(()=> $el.find('.divider').addClass('reveal'), 1400);
-
-        // poem lines one by one
-        $el.find('.poem-line').each(function(i){
-          setTimeout(()=> $(this).addClass('visible'), 1700 + i*300);
-        });
-
-        const lastPoem = 1700 + $('.poem-line').length * 300;
-        setTimeout(()=> $el.find('.heart-row').addClass('reveal'), lastPoem + 100);
-        setTimeout(()=> $el.find('.signature').addClass('reveal'), lastPoem + 400);
-        setTimeout(()=> $el.find('.bottom-ornament').addClass('reveal'), lastPoem + 700);
-
-      }, 600);
-    });
-
   });
-  </script>
+
+  // ── screen transition helper ──
+  function goTo(fromId, toId, delay){
+    delay = delay || 0;
+    setTimeout(function(){
+      $('#'+fromId).removeClass('visible');
+      setTimeout(function(){
+        $('#'+fromId).removeClass('active');
+        $('#'+toId).addClass('active');
+        setTimeout(()=>$('#'+toId).addClass('visible'), 60);
+      }, 700);
+    }, delay);
+  }
+
+  // ── S1 → S2 ──
+  $('#btnOpen').on('click',function(){ goTo('s1','s2'); });
+
+  // ── S2 YES → S4 ──
+  $('#btnYes').on('click',function(){ goTo('s2','s4'); });
+
+  // ── S2 NO → S3 ──
+  $('#btnNo').on('click',function(){ goTo('s2','s3'); });
+
+  // ── S3 RETURN → S2 ──
+  $('#btnReturn').on('click',function(){ goTo('s3','s2'); });
+
+  // ── S4 SEE MORE → S5 ──
+  $('#btnMore').on('click',function(){
+    goTo('s4','s5');
+    // stagger poem lines after transition
+    setTimeout(function(){
+      $('#s5 .poem-line').each(function(i){
+        setTimeout(()=>$(this).addClass('visible'), i*300+400);
+      });
+      const last = $('#s5 .poem-line').length * 300 + 700;
+      setTimeout(()=>$('#finalHearts').css('opacity',1), last);
+      setTimeout(()=>$('#finalSig').css('opacity',1), last+300);
+      setTimeout(()=>$('#finalOrnament').css('opacity',1), last+600);
+    }, 800);
+  });
+
+});
+</script>
 </body>
 </html>
