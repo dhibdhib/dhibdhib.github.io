@@ -163,6 +163,88 @@
     .signature { font-family:'Great Vibes',cursive; font-size:clamp(2rem,6vw,3.5rem); color:var(--gold); text-shadow:0 0 20px #c9a96e44; margin-top:18px; }
 
     /* ────────────────────────────
+       SCREEN NAME — NAME GATE
+    ──────────────────────────── */
+    #sName { gap:32px; text-align:center; }
+    .name-label {
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(1.4rem,5vw,2.4rem);
+      color:#f9dde3;
+      text-shadow:0 0 20px #e8304a44;
+      letter-spacing:0.05em;
+    }
+    .name-input-wrap {
+      position:relative;
+      width:min(340px,88vw);
+    }
+    .name-input {
+      width:100%;
+      background:rgba(15,0,5,0.7);
+      border:1.5px solid #e8304a55;
+      border-bottom:1.5px solid #e8304a;
+      color:#f9dde3;
+      font-family:'Playfair Display',serif;
+      font-style:italic;
+      font-weight:300;
+      font-size:clamp(1.1rem,3.5vw,1.5rem);
+      text-align:center;
+      letter-spacing:0.15em;
+      padding:14px 20px;
+      outline:none;
+      transition:all 0.4s ease;
+      caret-color:#e8304a;
+      text-shadow:0 0 12px #e8304a44;
+      box-shadow:0 0 20px #c0152a11, inset 0 0 10px #c0152a08;
+    }
+    .name-input::placeholder {
+      color:#6a3040;
+      font-style:italic;
+      letter-spacing:0.1em;
+    }
+    .name-input:focus {
+      border-color:#e8304a;
+      box-shadow:0 0 30px #c0152a33, inset 0 0 15px #c0152a11;
+      background:rgba(20,0,8,0.85);
+    }
+    .name-input-glow {
+      position:absolute; bottom:-2px; left:50%; transform:translateX(-50%);
+      width:0; height:2px;
+      background:linear-gradient(to right,transparent,#e8304a,transparent);
+      transition:width 0.4s ease;
+      border-radius:2px;
+    }
+    .name-input:focus ~ .name-input-glow { width:100%; }
+
+    /* Error message */
+    .name-error {
+      font-family:'Lato',sans-serif;
+      font-weight:300;
+      font-size:0.75rem;
+      letter-spacing:0.3em;
+      text-transform:uppercase;
+      color:#ff4466;
+      text-shadow:0 0 10px #e8304a66;
+      opacity:0;
+      transform:translateY(-6px);
+      transition:all 0.35s ease;
+      min-height:20px;
+    }
+    .name-error.show {
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* Shake animation for wrong name */
+    @keyframes shake {
+      0%,100%{transform:translateX(0);}
+      20%{transform:translateX(-10px);}
+      40%{transform:translateX(10px);}
+      60%{transform:translateX(-8px);}
+      80%{transform:translateX(8px);}
+    }
+    .name-input-wrap.shake { animation:shake 0.45s ease; }
+
+    /* ────────────────────────────
        SCREEN 1 — SPLASH
     ──────────────────────────── */
     #s1 { gap:28px; }
@@ -315,9 +397,37 @@
 <canvas id="heartCanvas"></canvas>
 
 <!-- ══════════════════════════
+     SCREEN NAME — NAME GATE
+══════════════════════════ -->
+<div class="screen active visible" id="sName">
+  <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:28px;">
+    <div style="font-size:2.5rem;color:#e8304a;animation:pulse-dim 2s ease-in-out infinite; letter-spacing:0.4em;">♥</div>
+    <p class="name-label">Chkoun enti ?</p>
+    <p style="font-family:'Lato',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.4em;text-transform:uppercase;color:#9a5060;text-shadow:0 0 8px #c0152a22;">
+      Dkhol ismek bch tenfel
+    </p>
+    <div class="name-input-wrap" id="nameInputWrap">
+      <input
+        class="name-input"
+        id="nameInput"
+        type="text"
+        placeholder="ismek houni..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <div class="name-input-glow"></div>
+    </div>
+    <p class="name-error" id="nameError">Mch nty li lazmek tkoun houni 👀</p>
+    <button class="btn" id="btnNameConfirm" style="font-size:0.85rem;padding:18px 50px;letter-spacing:0.4em;">
+      ✦ &nbsp; Dkhol &nbsp; ✦
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════
      SCREEN 0 — ENTRY
 ══════════════════════════ -->
-<div class="screen active visible" id="s0">
+<div class="screen" id="s0">
   <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;">
     <div style="font-size:3rem;color:#e8304a;animation:pulse-dim 2s ease-in-out infinite;">♥</div>
     <div style="font-family:'Great Vibes',cursive;font-size:clamp(1.5rem,5vw,2.8rem);color:#f9dde3;letter-spacing:0.05em;text-shadow:0 0 30px #e8304a44;">
@@ -490,7 +600,7 @@ $(document).ready(function(){
   })();
 
   $(document).on('click',function(e){
-    if($(e.target).is('button')) return;
+    if($(e.target).is('button,input')) return;
     for(let i=0;i<8;i++){
       const $h=$('<div>').text('♥').css({
         position:'fixed',left:e.clientX,top:e.clientY,
@@ -527,6 +637,33 @@ $(document).ready(function(){
     }, 1600);
   }
 
+  /* ── NAME GATE ── */
+  function checkName(){
+    const val = $('#nameInput').val().trim().toLowerCase();
+    const accepted = ['oussema', 'ousséma', 'oussama', 'ossema'];
+    if(accepted.includes(val)){
+      $('#nameError').removeClass('show');
+      kissAndGo('sName','s0');
+    } else {
+      // Shake + show error
+      const $wrap = $('#nameInputWrap');
+      $wrap.addClass('shake');
+      setTimeout(()=>$wrap.removeClass('shake'),450);
+      $('#nameError').addClass('show');
+      $('#nameInput').focus();
+    }
+  }
+
+  $('#btnNameConfirm').on('click', checkName);
+  $('#nameInput').on('keydown', function(e){
+    if(e.key === 'Enter') checkName();
+    // Hide error while typing
+    if($('#nameError').hasClass('show')){
+      $('#nameError').removeClass('show');
+    }
+  });
+
+  /* ── OTHER SCREENS ── */
   $('#btnEntry').on('click',function(){ kissAndGo('s0','s1'); });
   $('#btnOpen').on('click',function(){ kissAndGo('s1','s2'); });
   $('#btnYes').on('click',function(){ kissAndGo('s2','s4'); });
@@ -574,6 +711,8 @@ $(document).ready(function(){
     $('#audioProgress').css('width','0%');
   });
 
+  // Auto-focus the name input on load
+  setTimeout(()=>$('#nameInput').focus(), 400);
 });
 </script>
 </body>
