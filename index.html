@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Oussty💕</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,300;1,300;1,400&family=Lato:wght@100;300&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,300;1,300;1,400&family=Lato:wght@100;300;400&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
     :root {
@@ -46,40 +46,113 @@
 
     /* ── BUTTONS ── */
     .btn {
-      background:none;
-      border:1px solid #c0152a88;
-      color:#e8304a;
-      font-family:'Lato',sans-serif; font-weight:100;
-      font-size:0.75rem; letter-spacing:0.5em; text-transform:uppercase;
-      padding:16px 44px; cursor:pointer; position:relative; overflow:hidden;
-      transition:all 0.4s ease; outline:none; margin:6px;
+      background: rgba(15, 0, 5, 0.6);
+      border: 1.5px solid #e8304a;
+      color: #ff8fa0;
+      font-family:'Lato',sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      padding: 16px 44px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      outline: none;
+      margin: 6px;
+      text-shadow: 0 0 12px #e8304a88;
+      box-shadow: 0 0 12px #c0152a22, inset 0 0 8px #c0152a11;
     }
     .btn::before {
       content:''; position:absolute; inset:0;
-      background:var(--red); transform:translateX(-100%);
+      background: linear-gradient(135deg, #c0152a, #8b0000);
+      transform:translateX(-100%);
       transition:transform 0.4s ease; z-index:-1;
     }
-    .btn:hover { color:#fff; border-color:var(--red); letter-spacing:0.6em; }
+    .btn:hover {
+      color: #fff;
+      border-color: #ff6b80;
+      letter-spacing: 0.45em;
+      text-shadow: 0 0 16px #ffffff99;
+      box-shadow: 0 0 24px #e8304a55, inset 0 0 12px #c0152a33;
+    }
     .btn:hover::before { transform:translateX(0); }
 
     .btn-yes {
-      border-color:#c0152a88; color:#e8304a;
+      border-color: #e8304a;
+      color: #ff8fa0;
+      background: rgba(192, 21, 42, 0.15);
+      font-weight: 400;
+      text-shadow: 0 0 14px #e8304aaa;
+      box-shadow: 0 0 18px #c0152a33, 0 0 6px #e8304a22;
     }
+    .btn-yes::before { background: linear-gradient(135deg, #c0152a, #8b0000); }
+
     .btn-no {
-      border-color:#44444488; color:#888;
+      border-color: #886677;
+      color: #d4a0b0;
+      background: rgba(40, 10, 20, 0.5);
+      font-weight: 400;
+      text-shadow: 0 0 10px #88667755;
     }
-    .btn-no::before { background:#333; }
-    .btn-no:hover { color:#fff; border-color:#555; letter-spacing:0.6em; }
+    .btn-no::before { background: #3a2030; }
+    .btn-no:hover { color:#fff; border-color:#aa8899; letter-spacing:0.45em; }
 
     .btn-gold {
-      border-color:#c9a96e88; color:var(--gold);
+      border-color: #c9a96e;
+      color: #f0c97e;
+      background: rgba(100, 70, 20, 0.2);
+      font-weight: 400;
+      text-shadow: 0 0 14px #c9a96eaa;
+      box-shadow: 0 0 16px #c9a96e22;
     }
-    .btn-gold::before { background:#7a5c2a; }
-    .btn-gold:hover { color:#fff; border-color:var(--gold); }
+    .btn-gold::before { background: linear-gradient(135deg, #9a7040, #5a3c10); }
+    .btn-gold:hover { color:#fff; border-color:#f0d080; }
+
+    /* ── NOTICES / HINTS ── */
+    .splash-hint {
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      color: #e8a0b0;
+      text-transform: uppercase;
+      animation: blink 2.5s ease-in-out infinite;
+      text-shadow: 0 0 10px #c0152a66;
+    }
+    @keyframes blink { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+    .question-sub {
+      font-weight: 300;
+      font-size: 0.78rem;
+      letter-spacing: 0.35em;
+      color: #e8a0b0;
+      text-transform: uppercase;
+      margin-top: 6px;
+      text-shadow: 0 0 10px #c0152a55;
+    }
+
+    .shame-sub {
+      font-weight: 300;
+      font-size: 0.78rem;
+      letter-spacing: 0.35em;
+      color: #c08090;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px #33333366;
+    }
+
+    .tag {
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: #e8a0b0;
+      margin-bottom: 24px;
+      text-shadow: 0 0 10px #c0152a44;
+    }
 
     /* ── TYPOGRAPHY SHARED ── */
     .ornament { font-size:2rem; letter-spacing:0.4em; color:var(--red-soft); margin-bottom:10px; }
-    .tag { font-weight:100; font-size:0.6rem; letter-spacing:0.55em; text-transform:uppercase; color:#b06070; margin-bottom:24px; }
     .divider {
       display:flex; align-items:center; gap:16px; margin:24px 0;
       width:min(500px, 90vw);
@@ -93,11 +166,14 @@
        SCREEN 1 — SPLASH
     ──────────────────────────── */
     #s1 { gap:28px; }
-    .splash-hearts { font-size:2rem; letter-spacing:0.6em; color:#3a000f; animation:pulse-dim 2s ease-in-out infinite; }
-    @keyframes pulse-dim { 0%,100%{color:#3a000f;} 50%{color:#6b0018;} }
-    .splash-text { font-family:'Great Vibes',cursive; font-size:clamp(1.5rem,5vw,2.5rem); color:#5a1020; }
-    .splash-hint { font-size:0.55rem; letter-spacing:0.3em; color:#4a1020; text-transform:uppercase; animation:blink 2.5s ease-in-out infinite; }
-    @keyframes blink { 0%,100%{opacity:0.3} 50%{opacity:0.9} }
+    .splash-hearts { font-size:2rem; letter-spacing:0.6em; color:#6b1828; animation:pulse-dim 2s ease-in-out infinite; }
+    @keyframes pulse-dim { 0%,100%{color:#6b1828;} 50%{color:#c0152a;} }
+    .splash-text {
+      font-family:'Great Vibes',cursive;
+      font-size:clamp(1.5rem,5vw,2.5rem);
+      color: #e8a0b0;
+      text-shadow: 0 0 20px #c0152a55;
+    }
 
     /* ────────────────────────────
        SCREEN 2 — DO YOU LOVE ME?
@@ -109,7 +185,6 @@
       text-shadow:0 0 30px #e8304a33;
       line-height:1.4; max-width:600px;
     }
-    .question-sub { font-weight:100; font-size:0.7rem; letter-spacing:0.4em; color:#b06070; text-transform:uppercase; margin-top:6px; }
     .btn-row { display:flex; gap:16px; margin-top:10px; flex-wrap:wrap; justify-content:center; }
 
     /* ────────────────────────────
@@ -125,9 +200,21 @@
     .shame-title {
       font-family:'Great Vibes',cursive;
       font-size:clamp(2rem,7vw,3.5rem);
-      color:#888; text-shadow:0 0 20px #33333344;
+      color: #d09090;
+      text-shadow: 0 0 20px #88444444;
     }
-    .shame-sub { font-weight:100; font-size:0.7rem; letter-spacing:0.4em; color:#555; text-transform:uppercase; }
+
+    /* btn-return special */
+    .btn-return {
+      margin-top:20px;
+      color: #d4a0b0 !important;
+      border-color: #886677 !important;
+      background: rgba(40,10,20,0.5) !important;
+      letter-spacing: 0.35em;
+      text-shadow: 0 0 8px #88667755 !important;
+    }
+    .btn-return::before { background: #3a2030 !important; }
+    .btn-return:hover { color:#fff !important; }
 
     /* ────────────────────────────
        SCREEN 4 — FUSE / LIGHT
@@ -145,7 +232,6 @@
       font-size:clamp(1rem,3vw,1.4rem); color:#fde8b0; line-height:1.8;
       max-width:520px;
     }
-    /* flame/glow bg for screen 4 */
     #s4 .glow-orb {
       position:fixed; border-radius:50%; filter:blur(100px); pointer-events:none; z-index:2;
     }
@@ -181,6 +267,17 @@
     .poem-line.md { font-size:clamp(0.95rem,2.8vw,1.2rem); color:#e8b8c2; }
     .poem-line.sm { font-size:clamp(0.8rem,2.2vw,1rem); color:#c98a98; }
     .poem-line.visible { transition:opacity 0.9s ease,transform 0.9s ease; opacity:1; transform:translateY(0); }
+
+    /* ── AUDIO PLAYER NOTICE ── */
+    .audio-label {
+      font-family:'Lato',sans-serif;
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: #e8a0b0;
+      text-shadow: 0 0 10px #c0152a55;
+    }
 
     /* ── BIG KISS OVERLAY ── */
     #bigKiss {
@@ -224,12 +321,12 @@
   <div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:32px;">
     <div style="font-size:3rem;color:#e8304a;animation:pulse-dim 2s ease-in-out infinite;">♥</div>
     <div style="font-family:'Great Vibes',cursive;font-size:clamp(1.5rem,5vw,2.8rem);color:#f9dde3;letter-spacing:0.05em;text-shadow:0 0 30px #e8304a44;">
-      Cadeau saghroun ala kad el dhourouf
-    </div> 
-    <button class="btn" id="btnEntry" style="font-size:0.8rem;padding:20px 60px;letter-spacing:0.6em;">
+      Aasslema Habibi
+    </div>
+    <button class="btn" id="btnEntry" style="font-size:0.85rem;padding:20px 60px;letter-spacing:0.45em;">
       Enzel houni
     </button>
-    <div class="splash-hint" style="color:#b06070;">Aya nabdou ?</div>
+    <div class="splash-hint">Aya nabdou ?</div>
   </div>
 </div>
 
@@ -238,8 +335,8 @@
 ══════════════════════════ -->
 <div class="screen" id="s1">
   <div class="splash-hearts">♥ ♥ ♥</div>
-  <div class="splash-text">Hedhi zeda bch ntawlha alik chwaya hehehe</div>
-  <button class="btn" id="btnOpen">✦ Hel Hel ✦</button>
+  <div class="splash-text">Hedhi haja saghrouna ala kad el dhourouf</div>
+  <button class="btn" id="btnOpen" style="font-size:0.85rem;">✦ Hel Hel ✦</button>
   <div class="splash-hint">click to reveal</div>
 </div>
 
@@ -260,13 +357,13 @@
      SCREEN 3 — SAD CAT
 ══════════════════════════ -->
 <div class="screen" id="s3">
-  <div class="shame-title">Tahki bjeddek !! NORMAAAAAAAAAAAAAL !!!</div>
+  <div class="shame-title">Tahki bjeddek !! Normal !!</div>
   <div class="cat-wrap">
     <img src="cat.jfif" alt="sad cat"/>
   </div>
-  <p class="shame-sub">aw bch njib sakina o nji hahahah</p>
-  <button class="btn" id="btnReturn" style="margin-top:20px; color:#aaa; border-color:#44444488; letter-spacing:0.4em;">
-    ↩ &nbsp; arja3 arja3 kallou chekek 
+  <p class="shame-sub">Aw bch njib sakina o nji hahahah</p>
+  <button class="btn btn-return" id="btnReturn">
+    ↩ &nbsp; Arja3 arja3 kallou chekek
   </button>
 </div>
 
@@ -277,19 +374,18 @@
   <div class="glow-orb glow-amber-1"></div>
   <div class="glow-orb glow-amber-2"></div>
   <div class="ornament" style="color:#f5a623;">✦ ✦ ✦</div>
-  <div class="fuse-title">Nty cham3et <br> hyeti ✦</div>
+  <div class="fuse-title">Nty cham3et hyeti o autrement dit <br> Source el dfé  ✦</div>
   <div class="divider" style="margin:16px 0;">
     <div class="divider-line" style="background:linear-gradient(to right,transparent,#f5a623,transparent);"></div>
     <span style="color:#f5a623; font-size:1.1rem;">✦</span>
     <div class="divider-line" style="background:linear-gradient(to right,transparent,#f5a623,transparent);"></div>
   </div>
   <p class="fuse-sub">
-    You make my life brighter just by existing.<br>
-    You shine through my darkest days<br>
-    like a flame that never fades —<br>
-    <em>warm, golden, and endlessly beautiful.</em>
+    mch bch nexasgeri ama somehow dhawetli hyeti.<br>
+    gratefull alekher eli nty f hyeti<br>
+    <em>nhebeek baarsha barsheeeet</em>
   </p>
-  <button class="btn btn-gold" id="btnMore" style="margin-top:28px;">
+  <button class="btn btn-gold" id="btnMore" style="margin-top:28px;font-size:0.85rem;">
     ✦ &nbsp; Zid chouf &nbsp; ✦
   </button>
 </div>
@@ -299,7 +395,7 @@
 ══════════════════════════ -->
 <div class="screen" id="s5">
   <div class="ornament">♥ ♥ ♥</div>
-  <p class="tag">a message from the heart</p>
+  <p class="tag">Mn kol galbi nheb nkolk </p>
   <h1 class="main-title">
     Happy Birthday
     <span>to the Love of my Life</span>
@@ -313,25 +409,24 @@
     <div class="divider-line"></div>
   </div>
   <div class="poem">
-    <p class="poem-line lg">You are my sunrise and my stars,</p>
-    <p class="poem-line lg">the reason my heart knows how to beat.</p>
-    <p class="poem-line md">Every moment with you is a gift I never deserve —<br>yet you give it endlessly, unconditionally.</p>
-    <p class="poem-line md">You are my favorite adventure,<br>my safest place, my greatest love.</p>
-    <p class="poem-line sm">On this day you were born, the world became more beautiful —<br>and I became the luckiest soul alive.</p>
-    <p class="poem-line sm">I love you beyond words, beyond time,<br>beyond every lifetime I could ever live.</p>
-    <p class="poem-line sm">You are everything I never knew I needed,<br>and everything I will always choose.</p>
-  </div>
+    <p class="poem-line lg">Aaid miledon saaiid hobbi ,</p>
+    <p class="poem-line lg">nchaallah kol aam o nty hay b alef khyr .</p>
+    <p class="poem-line md">O rabby yahyik l amthel amthelou (o ena maak akid) fil khyr nchallah <br> Raby ykhalik leya </p>
+    <p class="poem-line md">o yahfdhek laya , o yfadhlek leya o yostrek leya <br>wahdi</p>
+    <p class="poem-line sm">o nchallah rabby yaatik matetmanna <br>o ysaahelek f kol mahou saaib</p>
+    <p class="poem-line sm">Ena rani maadesh nhebek bark <br>Ena nmout fik </p>
   <div class="heart-row" style="opacity:0;transition:opacity 0.8s ease;" id="finalHearts">♥ ♥ ♥ ♥ ♥</div>
 
-  <!-- Audio player — before Forever yours -->
   <audio id="loveAudio" src="foryou.mp3" preload="auto"></audio>
   <div id="audioPlayer" style="opacity:0;transition:opacity 1s ease;margin:24px 0;display:flex;flex-direction:column;align-items:center;gap:10px;">
-    <p style="font-family:'Lato',sans-serif;font-weight:100;font-size:0.58rem;letter-spacing:0.45em;text-transform:uppercase;color:#b06070;">a message for you</p>
+    <p class="audio-label">Version vocale</p>
     <button id="playBtn" style="
-      background:none; border:1px solid #c0152a88; color:#e8304a;
+      background:rgba(192,21,42,0.15); border:1.5px solid #e8304a; color:#ff8fa0;
       font-size:1.4rem; width:60px; height:60px; border-radius:50%;
       cursor:pointer; outline:none; display:flex; align-items:center; justify-content:center;
       transition:all 0.3s ease;
+      text-shadow:0 0 10px #e8304a88;
+      box-shadow:0 0 16px #c0152a33;
     ">▶</button>
     <div style="width:180px;height:2px;background:#2a000a;border-radius:2px;overflow:hidden;">
       <div id="audioProgress" style="height:100%;width:0%;background:linear-gradient(to right,#c0152a,#e8304a);transition:width 0.3s linear;border-radius:2px;"></div>
@@ -339,16 +434,14 @@
   </div>
 
   <div class="signature" style="opacity:0;transition:opacity 1s ease;" id="finalSig">Forever yours ♥</div>
-  <div style="margin-top:36px;font-size:1.6rem;letter-spacing:0.6em;color:#8b2030;opacity:0;transition:opacity 0.8s ease;" id="finalOrnament">✦ ♥ ✦</div>
+  <div style="margin-top:36px;font-size:1.6rem;letter-spacing:0.6em;color:#e8304a88;opacity:0;transition:opacity 0.8s ease;" id="finalOrnament">✦ ♥ ✦</div>
 </div>
 
 <script>
 $(document).ready(function(){
 
-  // cursor
   $(document).on('mousemove',function(e){ $('#cursor').css({left:e.clientX,top:e.clientY}); });
 
-  // ── hearts canvas ──
   const canvas=document.getElementById('heartCanvas');
   const ctx=canvas.getContext('2d');
   function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
@@ -396,7 +489,6 @@ $(document).ready(function(){
     requestAnimationFrame(animate);
   })();
 
-  // click burst
   $(document).on('click',function(e){
     if($(e.target).is('button')) return;
     for(let i=0;i<8;i++){
@@ -414,7 +506,6 @@ $(document).ready(function(){
     }
   });
 
-  // ── screen transition helper ──
   function goTo(fromId, toId, delay){
     delay = delay || 0;
     setTimeout(function(){
@@ -427,7 +518,6 @@ $(document).ready(function(){
     }, delay);
   }
 
-  // ── kiss then go helper ──
   function kissAndGo(fromId, toId){
     const $k = $('#bigKiss');
     $k.css('opacity',1).addClass('animate');
@@ -437,25 +527,14 @@ $(document).ready(function(){
     }, 1600);
   }
 
-  // ── S0 → S1 with kiss ──
   $('#btnEntry').on('click',function(){ kissAndGo('s0','s1'); });
-
-  // ── S1 → S2 with kiss ──
   $('#btnOpen').on('click',function(){ kissAndGo('s1','s2'); });
-
-  // ── S2 YES → S4 with kiss ──
   $('#btnYes').on('click',function(){ kissAndGo('s2','s4'); });
-
-  // ── S2 NO → S3 ──
   $('#btnNo').on('click',function(){ goTo('s2','s3'); });
-
-  // ── S3 RETURN → S2 ──
   $('#btnReturn').on('click',function(){ goTo('s3','s2'); });
 
-  // ── S4 SEE MORE → S5 ──
   $('#btnMore').on('click',function(){
     goTo('s4','s5');
-    // stagger poem lines after transition
     setTimeout(function(){
       $('#s5 .poem-line').each(function(i){
         setTimeout(()=>$(this).addClass('visible'), i*300+400);
@@ -468,23 +547,21 @@ $(document).ready(function(){
     }, 800);
   });
 
-  // ── Audio play/pause ──
   const audio = document.getElementById('loveAudio');
   let playing = false;
 
   $('#playBtn').on('click', function(){
     if(!playing){
       audio.play();
-      $(this).html('⏸').css({'background':'#c0152a22','box-shadow':'0 0 20px #e8304a44'});
+      $(this).html('⏸').css({'background':'rgba(192,21,42,0.35)','box-shadow':'0 0 24px #e8304a55'});
       playing = true;
     } else {
       audio.pause();
-      $(this).html('▶').css({'background':'none','box-shadow':'none'});
+      $(this).html('▶').css({'background':'rgba(192,21,42,0.15)','box-shadow':'0 0 16px #c0152a33'});
       playing = false;
     }
   });
 
-  // update progress bar
   audio.addEventListener('timeupdate', function(){
     if(audio.duration){
       const pct = (audio.currentTime / audio.duration) * 100;
@@ -493,7 +570,7 @@ $(document).ready(function(){
   });
   audio.addEventListener('ended', function(){
     playing = false;
-    $('#playBtn').html('▶').css({'background':'none','box-shadow':'none'});
+    $('#playBtn').html('▶').css({'background':'rgba(192,21,42,0.15)','box-shadow':'0 0 16px #c0152a33'});
     $('#audioProgress').css('width','0%');
   });
 
